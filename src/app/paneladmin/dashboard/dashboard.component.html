@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">   
+            <div class="card" >
+                <h5 class="card-header bg-success text-white">Turnos</h5>
+                <hr class="my-0" />
+                <div class="card-body">
+                    <a class="dropdown-item" routerLink="datenew" >Nuevo turno</a>
+                    <a class="dropdown-item"routerLink="datelist" >Listar turnos</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" *ngIf="administrador">   
+            <div class="card" >
+                <h5 class="card-header bg-success text-white" >Agenda</h5>
+                <hr class="my-0" />
+                <div class="card-body" >
+                    <a class="dropdown-item"   routerLink="schednew">Nueva agenda</a>
+                    <a class="dropdown-item" routerLink="schedlist">Listar agendas creadas</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" *ngIf="administrador">   
+            <div class="card" >
+                <h5 class="card-header bg-success text-white" >Configuración</h5>
+                <hr class="my-0" />
+                <div class="card-body" >
+                    <a class="dropdown-item" routerLink="userlist">Administrar usuarios</a>
+                    <a class="dropdown-item" routerLink="deleglist">Administrar delegaciones</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

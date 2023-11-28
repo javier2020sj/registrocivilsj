@@ -1,0 +1,109 @@
+<div class="">
+    <div class="row">
+        <div class="col-md-12">   
+            <div class="card" >
+                <h5 class="card-header bg-primary text-white">Usuarios</h5>
+                <hr class="my-0" />
+                <div class="card-body">
+                                          <!-- Mensajes -->
+                    <div *ngIf="mensajeAlerta!=''" class="toast align-items-center text-white bg-{{mensajeAlertaTipo}} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                      <div class="d-flex">
+                        <div class="toast-body">
+                            {{mensajeAlerta}}
+                        </div>
+                        <button (click)="clickCerrarToast()" type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                      </div>
+                    </div>
+                    <div *ngIf="panelLista">
+                      <table class="table align-middle mb-3 bg-white">
+                          <thead class="bg-light">
+                            <tr>
+                              <th>Nombre de usuario</th>
+                              <th>Nombre</th>
+                              <th>Apellido</th>
+                              <th>Administrador</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of usuarios">
+                              <td >
+                                <div class="d-flex align-items-center">
+                                  <!-- <img
+                                      src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+                                      alt=""
+                                      style="width: 45px; height: 45px"
+                                      class="rounded-circle"
+                                      /> -->
+                                  <div class="ms-3">
+                                    <p class="fw-bold mb-1">{{item.username}}</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <p class="fw-normal mb-1">{{item.name}}</p>
+                              </td>
+                              <td>
+                                <p class="fw-normal mb-1">{{item.lastname}}</p>
+                              </td>
+                              <td>
+                                <span class="badge badge-success rounded-pill d-inline" *ngIf="item.admin==1" >si</span>
+                                <span class="badge badge-danger rounded-pill d-inline" *ngIf="item.admin==0" >no</span>
+                              </td>
+                              
+                              <td>
+                                <button type="button" class="btn btn-link btn-sm btn-rounded" (click)="RowSelected(item)">
+                                  Editar
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                      </table>
+                      <button class="btn btn-outline-success mx-2" (click)="nuevoUsuario()" >Nuevo usuario</button>
+                    </div>
+                    <!-- PANEL DE EDICION O CREACION DE USUARIO -->
+                    <div *ngIf="panelModif">
+                      <form>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="txtNombre"class="form-label">Nombre</label>
+                                <input [(ngModel)]="txtNombre" class="form-control" type="text" id="txtNombre" name="txtNombre" value="" autofocus required/>
+                            </div>
+                                            
+                            <div class="mb-3 col-md-6">
+                                <label for="txtApellido" class="form-label">Apellido</label>
+                                <input class="form-control" [(ngModel)]="txtApellido" type="text" name="txtApellido" id="txtApellido" value=""  required />
+                            </div>
+                            
+                            <div class="mb-3 col-md-6">
+                                <label for="txtUsername" class="form-label">Usuario</label>
+                                <input type="text" [(ngModel)]="txtUsername" class="form-control" id="username" name="txtUsername" placeholder="" required />
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label for="txtPassword" class="form-label">Contraseña</label>
+                                <input type="password" [(ngModel)]="txtPassword" class="form-control" id="txtPassword" name="txtPassword" placeholder="" required />
+                            </div>
+            
+                            <div class="mb-3 col-md-6">
+                                <label for="selAdmin" class="form-label">Administrador</label>
+                                <select id="selAdmin" [(ngModel)]="selAdmin" class="form-select" name ="selAdmin">
+                                  <option selected value="0">Usuario</option>
+                                  <option value="1">Admin</option>
+                                </select>
+                            </div>
+
+                            <div class="mt-2">
+                                <button class="btn btn-primary me-2" (click)="guardarUsuario()">Guardar</button>
+                                <button class="btn btn-outline-default me-2" (click)="abrirPanelLista()">Cancelar</button>
+                                <button class="btn btn-outline-danger me-2" (click)="eliminarUsuario()" *ngIf="idUsuario!=0" >Elimnar usuario</button>
+                            </div>
+                        </div>
+
+                      </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

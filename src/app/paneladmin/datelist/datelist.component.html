@@ -1,0 +1,117 @@
+<div class="">
+    <div class="row">
+        <div class="col-md-12">   
+            <div class="card" >
+                <h5 class="card-header bg-primary text-white">Listado de turnos</h5>
+                <hr class="my-0" />
+                <div class="card-body">
+                    <div class="row mb-3">
+
+                        <div class="form-group mb-3 col-md-4">
+                            <label for="fechaInicio" class="form-label me-3">Fecha de inicio</label>
+                            <input class="form-control  me-3" [(ngModel)]="fechaInicio" type="date" name="fechaInicio" id="fechaInicio" value=""  required />
+                        </div>
+                        <div class="form-group mb-3 col-md-4">
+                            <label for="fechaFin" class="form-label me-3">Fecha de fin</label>
+                            <input class="form-control me-3" [(ngModel)]="fechaFin" type="date" name="fechaFin" id="fechaFin" value=""  required />
+                        </div>
+                        <div class="form-group mb-3 col-md-4">
+                            <label for="selDelegacion" class="form-label">Delegación </label>
+                            <select (change)="selectDeleg()" name="selDelegacion" [(ngModel)]="selDelegacion" class="form-control" data-toggle="select">
+                            <option value="0" selected>Todo</option>    
+                            <option value={{item.id}} *ngFor="let item of delegaciones">{{item.nombre}} - {{item.localidad}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3 col-md-4">
+                            <label  class="form-label">{{lblMensajes}}</label>
+                        </div>
+
+                        <div class="form-group mb-3 col-md-12">
+                            <button class="btn btn-outline-primary me-2" (click)="clickBuscar()">Buscar</button>
+                            <!-- <button class="btn btn-outline-success" (click)="clickDatosGuardar()">Guardar y seguir</button> -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+
+                        <table class="table table-hover" *ngIf="turnos?.length > 0">
+                            <thead class="bg-light">
+                                <tr>
+                                  <th *ngIf="selDelegacion==0">Deleg.</th>  
+                                  <th>Fecha</th>
+                                  <th>DNI</th>
+                                  <th>Nombre</th>
+                                  <th>Apellido</th>
+                                  <th>T. Tramite</th>
+                                  <th>Tel.</th>
+                                  <th>Cel.</th>
+                                  <th *ngIf="admin">Usuario creador</th>
+                                  <th *ngIf="admin">Creado</th>
+                                  <th *ngIf="admin">Cancelado</th>
+                                  <th *ngIf="admin">Usuario cancela</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let item of turnos | 
+                                paginate: {
+                                            itemsPerPage: tableSize,
+                                            currentPage: page,
+                                            totalItems: count
+                                        };
+                                    let i = index" >
+                                    <td *ngIf="selDelegacion==0">
+                                        {{item.delegacion}}
+                                    </td>
+                                    <td>
+                                        {{item.fechaHora}}
+                                    </td>
+                                    <td>
+                                        {{item.dni}}
+                                    </td>
+                                    <td>
+                                        {{item.nombre}}
+                                    </td>
+                                    <td>
+                                        {{item.apellido}}
+                                    </td>
+                                    <td>
+                                        {{item.tipo_tramite}}
+                                    </td>
+                                    <td>
+                                        {{item.tel}}
+                                    </td>
+                                    <td>
+                                        {{item.cel}}
+                                    </td>    
+                                    <td *ngIf="admin"> 
+                                        {{item.username}}
+                                    </td>                                      
+                                    <td *ngIf="admin"> 
+                                        {{item.fechaCreacion}}
+                                    </td>    
+                                    <td *ngIf="admin"> 
+                                        {{item.cancelFecha}}
+                                    </td>                                      
+                                    <td *ngIf="admin"> 
+                                        {{item.cancelUsuario}}
+                                    </td>   
+                                                             
+                                </tr>
+                              </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center" *ngIf="turnos?.length > 0" >
+                            <pagination-controls
+                              previousLabel="Ant"
+                              nextLabel="Sig"
+                              (pageChange)="onTableDataChange($event)"
+                            >
+                            </pagination-controls>
+                        </div>
+                        <div class="d-flex justify-content-end" *ngIf="turnos?.length > 0" >
+                            <button class="btn btn-outline-primary me-2" (click)="clickExportar()">Exportar a excel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

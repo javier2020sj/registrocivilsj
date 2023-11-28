@@ -1,0 +1,156 @@
+<div class="">
+    <div class="row">
+        <div class="col-md-12">   
+            <div class="card" >
+                <h5 class="card-header bg-primary text-white">Agendas</h5>
+                <hr class="my-0" />
+                <div class="card-body">
+                    <!-- Listado de agenas -->
+
+                    <div class="row mb-3"  *ngIf="panelListado">
+                        <table class="table table-hover" *ngIf="agendas?.length  > 0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Deleg.</th>
+                                    <th>Fecha de inicio</th>
+                                    <th>Fecha de fin</th>
+                                    <th>Minutos de c/turno</th>
+                                    <th>Cant. Puestos</th>
+                                    <th>Creador</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr  *ngFor="let item of agendas  | 
+                                        paginate: {
+                                            itemsPerPage: tableSize,
+                                            currentPage: page,
+                                            totalItems: count
+                                        };
+                                    let i = index">
+                                    <td>
+                                        {{item.delegacion}}
+                                    </td>
+                                    <td>
+                                        {{item.fechaInicio | date:'dd/MM/YYYY h:mm:ss':'UTC'}}
+                                    </td>
+                                    <td>
+                                        {{item.fechaFin | date:'dd/MM/YYYY h:mm:ss':'UTC'}}
+                                    </td>
+                                    <td>
+                                        {{item.distancia}}
+                                    </td>
+                                    <td>
+                                        {{item.cantidad}}
+                                    </td>
+                                    <td>
+                                        {{item.username}}
+                                    </td>
+                                    <td>
+                                        <!-- PAUSAR AGENDA -->
+                                        <label class="form-label" *ngIf="item==itemCancelar">Confirma?</label>
+                                        <button class="btn btn-outline-danger btn-sm " *ngIf="!(item==itemCancelar) && item.pause_status==0" (click)="clickPausarAgenda(item)">Pausar</button>
+                                        <button class="btn btn-outline-danger btn-sm mx-1" *ngIf="item==itemCancelar" (click)="clickPausarAgendaSi(item)">Si</button>
+                                        <button class="btn btn-outline-primary btn-sm mx-1" *ngIf="item==itemCancelar" (click)="clickPausarAgendaNo()">No</button>
+
+                                        <!-- REANUDAR AGENDA -->
+                                        <label class="form-label" *ngIf="item==itemReanudar">Reanudar?</label>
+                                        <button class="btn btn-outline-success btn-sm " *ngIf="!(item==itemReanudar) && item.pause_status==1" (click)="clickReanudarAgenda(item)">Reanudar</button>
+                                        <button class="btn btn-outline-success btn-sm mx-1" *ngIf="item==itemReanudar" (click)="clickReanudarAgendaSi(item)">Si</button>
+                                        <button class="btn btn-outline-primary btn-sm mx-1" *ngIf="item==itemReanudar" (click)="clickReanudarAgendaNo()">No</button>
+                                    </td>    
+                                    <td>
+                                        <button class="btn btn-outline-primary btn-sm mx-1"  (click)="clickVerTurnos(item)">Turnos</button>
+                                    </td>                       
+                                
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center" *ngIf="agendas?.length>0">
+                            <pagination-controls
+                                previousLabel="Ant"
+                                nextLabel="Sig"
+                                (pageChange)="onTableDataChange($event)"
+                            >
+                            </pagination-controls>
+                        </div>
+                        <div class="d-flex justify-content-center" *ngIf="!(agendas?.length>0)">
+                            <h5>No hay agendas</h5>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Listado de turnos -->
+
+                    <div class="row mb-3" *ngIf="panelTurnos">
+                        <table class="table table-hover" *ngIf="turnos?.length  > 0">
+                            <thead class="bg-light">
+                                <tr>
+                                <th>Fecha</th>
+                                <th>Nombre y Apellido</th>
+                                <th>Tel.</th>
+                                <th>Cel.</th>
+                                <th>T. Trámite</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr  *ngFor="let item of turnos  | 
+                                        paginate: {
+                                            itemsPerPage: tableSize,
+                                            currentPage: page,
+                                            totalItems: count
+                                        };
+                                    let i = index">
+                                    <td>
+                                        {{item.fechaHora}}
+                                    </td>
+                                    <td>
+                                        {{item.apellido}}, {{item.nombre}}
+                                    </td>
+                                    <td>
+                                        {{item.tel}}
+                                    </td>
+                                    <td>
+                                        {{item.cel}}
+                                    </td>
+                                    <td>
+                                        {{item.tipo_tramite}}
+                                    </td>
+                                    <!-- <td>
+                                        <label class="form-label" *ngIf="item==itemCancelar">Cancelar turno?</label>
+                                        <button class="btn btn-outline-danger" *ngIf="!(item==itemCancelar)" (click)="clickCancelarTurno(item)">Cancelar</button>
+                                        <button class="btn btn-outline-danger btn-sm mx-1" *ngIf="item==itemCancelar" (click)="clickCancelarTurnoSi(item)">Si</button>
+                                        <button class="btn btn-outline-primary btn-sm mx-1" *ngIf="item==itemCancelar" (click)="clickCancelarTurnoNo()">No</button>
+                                    </td>                          -->
+                                
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center" *ngIf="turnos?.length>0">
+                            <pagination-controls
+                                previousLabel="Ant"
+                                nextLabel="Sig"
+                                (pageChange)="onTableTurnosDataChange($event)"
+                            >
+                            </pagination-controls>
+                        </div>
+                        <div class="d-flex justify-content-center" *ngIf="!(turnos?.length>0)">
+                            <h5>No hay turnos previos</h5>
+                        </div>
+                        <button class="btn btn-outline-default btn-sm mx-1"  (click)="abrirPanelListado()">Volver</button>
+                    </div>
+
+
+
+
+                        
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

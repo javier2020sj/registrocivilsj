@@ -1,0 +1,284 @@
+<div class="">
+    <div class="row">
+        <div class="col-md-12">   
+            <div class="card" >
+                <h5 class="card-header bg-primary text-white">Solicitar turno</h5>
+                <hr class="my-0" />
+                <div class="card-body">
+                    <form action="">
+
+                        <!-- Mensajes -->
+                        <div *ngIf="mensajeAlerta!=''" class="toast align-items-center text-white bg-{{mensajeAlertaTipo}} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                            <div class="toast-body">
+                                {{mensajeAlerta}}
+                            </div>
+                            <button (click)="clickCerrarToast()" type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+
+
+                        <!-- Buscar persona -->
+
+                        <div class="row mb-3" *ngIf="panelBuscar">
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="form-label me-3" for="txtDni" >DNI:</label> <span *ngIf="panelDatos" class="bg-light text-dark">{{txtDni}}</span>
+                                <input *ngIf="!panelDatos" type="text"  [(ngModel)]="txtDni"  (change)="onChange()" (keypress)="numberOnly($event)" id="txtDni" name="txtDni" class="form-control  mb-3" value="">
+                                <button class="btn btn-outline-success"  [disabled]='botonBuscar' *ngIf="!panelDatos" (click)="clickBuscar()">Buscar</button>
+                            </div>
+                        </div>
+
+                       <app-search-by-name *ngIf="searchByName" (personaSeleccionada)="cambiarDni($event)"></app-search-by-name>
+
+
+                        <!-- Modificar o crear persona nueva -->
+                        <div class="row mb-3" *ngIf="panelDatos">
+                            <div class="form-group mb-3 col-md-5">
+                                <label for="txtNombre" class="form-label">Nombres *</label>
+                                <input type="text" class="form-control" [(ngModel)]="txtNombre" id="txtNombre" name="txtNombre" placeholder="" value="10" required />
+                                <div *ngIf="txtNombre?.['required']">Name is required.</div>
+                            </div>
+                            
+                            <div class="form-group mb-3 col-md-5">
+                                <label for="txtApellido" class="form-label">Apellidos *</label>
+                                <input type="text" class="form-control" [(ngModel)]="txtApellido" id="txtApellido" name="txtApellido" placeholder="" value="10" required />
+                            </div>
+
+                            <div class="form-group mb-3 col-md-2">
+                                <label for="fechaNacimiento" class="form-label">Fecha de nacimiento *</label>
+                                <input class="form-control" [(ngModel)]="fechaNacimiento" type="date" name="fechaNacimiento" id="fechaNacimiento" value=""  required />
+                            </div>
+                            <div class="form-group mb-3 col-md-4">
+                                <label for="selSexo" class="form-label">Sexo</label>
+                                
+                                <select name="selSexo" [(ngModel)]="selSexo"  class="form-control" data-toggle="select">
+                                    <option value="0" >Seleccione sexo</option>
+                                    <option value="M" >Masculino</option>
+                                    <option value="F" >Femenino</option>
+                                    <option value="O" >Otro</option>
+                                </select>
+                                
+                            </div>
+                            <div class="form-group mb-3 col-md-8">
+                                <label for="txtDireccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" [(ngModel)]="txtDireccion" id="txtDireccion" name="txtDireccion" placeholder="" value="10" required />
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="selProvincias" class="form-label">Provincia</label>
+                                
+                                <ngx-select-dropdown 
+                                    [config]="configProv" 
+                                    [options]="provincias"
+                                    [(ngModel)]="selProv" 
+                                    [multiple]="false" 
+                                    name="selProv"
+                                    (change)="provChange()"> 
+                                </ngx-select-dropdown>
+
+                                <!-- <select name="selProvincias" (change)="provChange()"  [(ngModel)]="selProv"  class="form-control" data-toggle="select">
+                                    <option value="0" selected>Seleccione provincia</option>    
+                                    <option value={{item.id}} *ngFor="let item of provincias">{{item.nombre}}</option>
+
+                                </select> -->
+                             
+                            </div>
+                            
+                            <div class="form-group mb-3 col-md-6">
+
+                                  
+                                <label for="selLocalidades" class="form-label">Localidad</label>
+                                <ngx-select-dropdown 
+                                    [config]="config" 
+                                    [options]="localidades"
+                                    [(ngModel)]="selLocalidad" 
+                                    [multiple]="false" 
+                                    name="selLocalidad"
+                                    (change)="localChange()" 
+                                ></ngx-select-dropdown>
+                              
+<!--                               
+
+                                <select name="selLocalidades" (change)="localChange()" [(ngModel)]="selLocalidad"  class="form-control" data-toggle="select">
+                                    <option value="0" selected>Seleccione localidad</option>    
+                                    <option value={{item.id}} *ngFor="let item of localidades">{{item.nombre_completo}}</option>
+
+                                </select>
+                                -->
+                            </div>
+
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="txtTel" class="form-label">Teléfono</label>
+                                <input type="text" (keypress)="numberOnly($event)" pattern="[0-9]*" class="form-control" [(ngModel)]="txtTel" id="txtTel" name="txtTel" placeholder="" value="10" required />
+                            </div>
+
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="txtCelular" class="form-label">Celular</label>
+                                <input type="text" (keypress)="numberOnly($event)" pattern="[0-9]*"  class="form-control" [(ngModel)]="txtCelular" id="txtCelular" name="txtCelular" placeholder="" value="10" required />
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="txtEmail" class="form-label">E-Mail</label>
+                                <input type="email" class="form-control" [(ngModel)]="txtEmail" id="txtEmail" name="txtEmail" placeholder="" value="10" required />
+                            </div>
+
+                            <div class="form-group mb-3 col-md-12">
+                                <button class="btn btn-outline-danger me-2" (click)="abrirPanelBuscar()">Volver</button>
+                                <button class="btn btn-outline-success" (click)="clickDatosGuardar()">Guardar y seguir</button>
+                            </div>
+                        </div>
+                        <!-- Listado de turnos -->
+
+                        <div class="row mb-3" *ngIf="panelPendientes">
+                            <table class="table table-hover mx-3" *ngIf="turnosPendientes?.length  > 0">
+                                <thead class="bg-light">
+                                    <tr>
+                                    <th>Fecha</th>
+                                    <th>Delegación</th>
+                                    <th>T. Trámite</th>
+                                    <th>...</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr  *ngFor="let item of turnosPendientes  | 
+                                            paginate: {
+                                                itemsPerPage: tableSize,
+                                                currentPage: page,
+                                                totalItems: count
+                                            };
+                                        let i = index">
+                                        <td>
+                                            {{item.fechaHora}}
+                                        </td>
+                                        <td>
+                                            {{item.delegacion}}
+                                        </td>
+                                        <td>
+                                            {{item.tipo_tramite}}
+                                        </td>
+                                        <td>
+                                            <label class="form-label" *ngIf="item==itemCancelar">Cancelar turno?</label>
+                                            <button class="btn btn-outline-danger" *ngIf="!(item==itemCancelar)" (click)="clickCancelarTurno(item)">Cancelar</button>
+                                            <button class="btn btn-outline-danger btn-sm mx-1" *ngIf="item==itemCancelar" (click)="clickCancelarTurnoSi(item)">Si</button>
+                                            <button class="btn btn-outline-primary btn-sm mx-1" *ngIf="item==itemCancelar" (click)="clickCancelarTurnoNo()">No</button>
+                                        </td>                         
+                                    
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                            <div class="d-flex justify-content-center" *ngIf="turnosPendientes?.length>0">
+                                <pagination-controls
+                                  previousLabel="Ant"
+                                  nextLabel="Sig"
+                                  (pageChange)="onTableDataChange($event)"
+                                >
+                                </pagination-controls>
+                            </div>
+                            <div class="d-flex justify-content-center" *ngIf="!(turnosPendientes?.length>0)">
+                                <h5>No hay turnos previos</h5>
+                            </div>
+
+                        </div>
+                        
+                        <div class="form-group mb-3 col-md-12" *ngIf="panelPendientes">
+
+                            <button class="btn btn-outline-danger me-2" (click)="abrirPanelDatos()">Volver</button>
+                            <button class="btn btn-outline-primary me-2" (click)="abrirPanelTurno()" *ngIf="turnosPendientes?.length  == 0">Nuevo turno</button>
+                        </div>
+                        <!-- Seleccionar delegación, tipo de tramite y fecha de turno -->
+                        <div class="row mb-3" *ngIf="panelTurno">
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="selDelegacion" class="form-label">Delegación </label>
+                                <select (change)="selectDeleg()" name="selDelegacion" [(ngModel)]="selDelegacion" class="form-control" data-toggle="select">
+                                <option value="0" selected>Seleccione deleg.</option>    
+                                <option value={{item.id}} *ngFor="let item of delegaciones">{{item.nombre}} - {{item.descripcion}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="selTramite" class="form-label">Tipo de trámite </label>
+                                <select (change)="selectTramite()" name="selTramite" [(ngModel)]="selTramite" class="form-control" data-toggle="select">
+                                <option value="0" selected>Seleccione tipo de trámite.</option>    
+                                <option value={{item.id}} *ngFor="let item of tipotramites">{{item.tipo_tramite}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3 col-md-12">
+                                <label class="form-label mx-3" for="txtDni" >Direccion:</label> <span *ngIf="selDelegacion!='0'" class="bg-light text-dark">{{delegSeleccionado["direccion"]}}</span>
+                                <label class="form-label mx-3" for="txtDni" >Teléfono:</label> <span *ngIf="selDelegacion!='0'" class="bg-light text-dark">{{delegSeleccionado["telefono"]}}</span>
+                                <label class="form-label mx-3" for="txtDni" >Localidad:</label> <span *ngIf="selDelegacion!='0'" class="bg-light text-dark">{{delegSeleccionado["localidad"]}}</span>
+                            </div>
+
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="fechaTurno" class="form-label">Fecha</label>
+                                <input class="form-control" (change)="fechaChange()" [(ngModel)]="fechaTurno" type="date" min ={{manana}} name="fechaInicio" id="fechaInicio" value=""  required />
+                            </div>
+
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="selhora" class="form-label">Hora</label>
+                                <select name="selhora" (change)="horaChange()" [(ngModel)]="selhora" class="form-control" data-toggle="select">
+                                    <option value="0" selected>Seleccione hora</option>    
+                                    <option value={{item.sch_id}} *ngFor="let item of horarios">{{item.turno}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3 col-md-12">
+                                <label for="fechaInicio" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                            <div class="form-group mb-3 col-md-12">
+                                <button class="btn btn-outline-danger me-2" (click)="abrirPanelPendientes()">Volver</button>
+                                <button class="btn btn-outline-success me-2" (click)="clickTurnoSiguiente()">Siguiente</button>
+                            </div>
+                        </div>
+
+                        <!-- Mostrar detalle del turno -->
+
+                        <div class="row mb-3" *ngIf="panelDetalle">
+                            <h2>Datos personales</h2>
+                            <hr>
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="form-label me-3" for="" >DNI:</label> <span class="bg-light text-dark">{{txtDni}}</span>                              
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="form-label me-3" for="" >Nombre y Apellido:</label> <span lass="bg-light text-dark">{{txtApellido}}, {{txtNombre}}</span>                              
+                            </div>
+                            <div class="form-group col-md-12 mb-3">
+                                <label class="form-label me-3" for="" >Dirección:</label> <span lass="bg-light text-dark">{{txtDireccion}}</span>                              
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="form-label me-3" for="" >Teléfonos:</label> <span lass="bg-light text-dark">{{txtTel}}, {{txtCelular}}</span>                              
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="form-label me-3" for="" >Email:</label> <span lass="bg-light text-dark">{{txtEmail}}</span>                              
+                            </div>
+                            
+                            <h2>Datos de turno</h2>
+                            <hr>
+                            <div class="form-group col-md-12 mb-3">
+                                <h4><label class="form-label me-3">Fecha y hora de turno:</label> <span class="bg-light text-dark">{{fechaTurno.split("-")[2]}}/{{fechaTurno.split("-")[1]}}/{{fechaTurno.split("-")[0]}} {{horaTurnoSeleccionado}}</span>                              </h4>
+                            </div>
+                            <div class="form-group col-md-12 mb-3">
+                                <h4><label class="form-label me-3" >Delegación:</label> <span  class="bg-light text-dark">{{delegSeleccionado["nombre"]}}</span></h4>
+                            </div>
+                            <div class="form-group col-md-12 mb-3">
+                                <label class="form-label me-3" >Direccion:</label> <span  class="bg-light text-dark">{{delegSeleccionado["direccion"]}}</span>
+                                <label class="form-label mx-3">Teléfono:</label> <span  class="bg-light text-dark">{{delegSeleccionado["telefono"]}}</span>
+                                <label class="form-label mx-3" >Localidad:</label> <span class="bg-light text-dark">{{delegSeleccionado["localidad"]}}</span>
+                            </div>
+
+                            <div class="form-group col-md-12 mb-3">
+                                <h4><label class="form-label me-3" >Tipo de trámite:</label> <span  class="bg-light text-dark">{{tramiteSeleccionado['tipo_tramite']}}</span></h4>
+                            </div>
+                            <div class="form-group col-md-12 mb-3">
+                                <label class="form-label me-3" >Requisitos:</label> <span  class="bg-light text-dark">{{tramiteSeleccionado["Requisitos"]}}</span>
+                            </div>
+                            <hr>
+                            <div class="form-group mb-3 col-md-12">
+                                <button class="btn btn-outline-danger me-2" (click)="abrirPanelTurno()">Volver</button>
+                                <button class="btn btn-outline-success me-2" (click)="clickdetalleFinaliza()">Finalizar</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

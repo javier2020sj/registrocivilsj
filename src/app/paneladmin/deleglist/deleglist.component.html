@@ -1,0 +1,152 @@
+<div class="">
+    <div class="row">
+        <div class="col-md-12">   
+            <div class="card" >
+                <h5 class="card-header container-fluid bg-primary text-white justify-content-center">
+                  <div class="row">
+                    <div class="col-md-10 justify-content-end">
+                      Delegaciones
+                  </div>
+                  <div class="col-md-2 float-right">
+                  </div>
+                  </div>
+                  
+                </h5>
+                <hr class="my-0" />
+                <div class="card-body">
+                                          <!-- Mensajes -->
+                    <div *ngIf="mensajeAlerta!=''" class="toast align-items-center text-white bg-{{mensajeAlertaTipo}} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                      <div class="d-flex">
+                        <div class="toast-body">
+                            {{mensajeAlerta}}
+                        </div>
+                        <button (click)="clickCerrarToast()" type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                      </div>
+                    </div>
+                    <div *ngIf="panelLista">
+                      <div class="container-fuil">
+                        <div class="row">
+                          <div class="col-6">
+                            <button class="btn btn-outline-success mx-2" (click)="nuevaDeleg()" >Nueva delegación</button>
+                          </div>
+                          <div class="col-6 float-right">
+                            <button class="btn btn-danger float-right" routerLink="/adminpanel" >Salir</button>
+                          </div>
+                        </div>
+                      </div>
+                        
+                        
+                      <table class="table align-middle mb-3 bg-white">
+                          <thead class="bg-light">
+                            <tr>
+                              <th>Nombre</th>
+                              <th>Descrip.</th>
+                              <th>Dirección</th>
+                              <th>Teléfono</th>
+                              <th>E-Mail</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of delegaciones">
+                              <td >
+                                <div class="d-flex align-items-center">
+                                  <!-- <img
+                                      src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+                                      alt=""
+                                      style="width: 45px; height: 45px"
+                                      class="rounded-circle"
+                                      /> -->
+                                  <div class="ms-3">
+                                    <p class="fw-bold mb-1">{{item.nombre}}</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <p class="fw-normal mb-1">{{item.descripcion}}</p>
+                              </td>
+                              <td>
+                                <p class="fw-normal mb-1">{{item.direccion}}</p>
+                              </td>
+                              <td>
+                                <p class="fw-normal mb-1">{{item.localidad}}</p>
+                              </td>
+                              <td>
+                                <p class="fw-normal mb-1">{{item.email}}</p>
+                              </td>                            
+                              <td>
+                                <button type="button" class="btn btn-link btn-sm btn-rounded" (click)="RowSelected(item)">
+                                  Editar
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                      </table>
+                    </div>
+                    <!-- PANEL DE EDICION O CREACION DE USUARIO -->
+                    <div *ngIf="panelModif">
+                      <form>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="txtNombre"class="form-label">Nombre</label>
+                                <input [(ngModel)]="txtNombre" class="form-control" type="text" id="txtNombre" name="txtNombre" value="" autofocus required/>
+                            </div>
+                                            
+                            <div class="mb-3 col-md-6">
+                                <label for="txtDescripcion" class="form-label">Descripción</label>
+                                <input class="form-control" [(ngModel)]="txtDescripcion" type="text" name="txtDescripcion" id="txtDescripcion" value=""  required />
+                            </div>
+                            
+                            <div class="mb-3 col-md-6">
+                                <label for="txtDireccion" class="form-label">Dirección</label>
+                                <input type="text" [(ngModel)]="txtDireccion" class="form-control" id="txtDireccion" name="txtDireccion" placeholder="" required />
+                            </div>
+
+                                     
+                            <div class="form-group mb-3 col-md-4">
+                                <label for="selLocalidades" class="form-label">Localidad</label>
+                                
+                                <select name="selLocalidades" [(ngModel)]="selLocalidad"  class="form-control" data-toggle="select">
+                                    <option value="0" >Seleccione localidad</option>
+                                    <option value="25 de mayo" >25 de Mayo</option>
+                                    <option value="9 de julio" >9 de Julio</option>
+                                    <option value="albardon" >Albardón</option>
+                                    <option value="angaco" >Angaco</option>
+                                    <option value="calingasta" >Calingasta</option>
+                                    <option value="capital" > Capital</option>
+                                    <option value="caucete" >Caucete</option>
+                                    <option value="chimbas" >Chimbas</option>
+                                    <option value="iglesia" >Iglesia</option>
+                                    <option value="jachal" >Jáchal</option>
+                                    <option value="pocito" >Pocito</option>
+                                    <option value="rawson" >Rawson</option>
+                                    <option value="rivadavia" >Rivadavia</option>
+                                    <option value="san martin" >San Martín</option>
+                                    <option value="santa lucía" >Santa Lucía</option>
+                                    <option value="sarmiento" >Sarmiento</option>
+                                    <option value="ullum" >Ullum</option>
+                                    <option value="valle fertil" >Valle Fértil</option>
+                                    <option value="zonda" >Zonda</option>
+                                    <option value="otra" >Otra</option>
+                                </select>
+                                
+                            </div>
+                            
+                            <div class="mb-3 col-md-6">
+                                <label for="txtEmail" class="form-label">Email</label>
+                                <input type="text" [(ngModel)]="txtEmail" class="form-control" id="txtEmail" name="txtEmail" placeholder="" required />
+                            </div>
+                            <div class="mt-2">
+                                <button class="btn btn-primary me-2" (click)="guardarDeleg()">Guardar</button>
+                                <button class="btn btn-outline-default me-2" (click)="abrirPanelLista()">Cancelar</button>
+                                <button class="btn btn-outline-danger me-2" (click)="eliminarDeleg()" *ngIf="idDelegacion!=0" >Elimnar usuario</button>
+                            </div>
+                        </div>
+
+                      </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

@@ -1,0 +1,73 @@
+<div class="">
+  <div class="row">
+      <div class="col-md-12">   
+          <div class="card" >
+              <h5 class="card-header bg-primary text-white">Generar agenda</h5>
+              <hr class="my-0" />
+              <div class="card-body">
+                  <form id="form" method="POST" action="turnos_generar.php">
+
+                      
+
+                      <div class="row">
+          
+                                                
+                          <div class="mb-3 col-md-10">
+                            <label for="selDelegations" class="form-label">Delegación</label>
+                            
+                            <select name="deleg" [(ngModel)]="selDelegations" class="form-control" data-toggle="select">
+                              <option value="0" >Seleccione delegación</option>    
+                              <option value={{item.id}} *ngFor="let item of deleg">{{item.nombre}} - {{item.descripcion}}</option>
+                            </select>
+                            
+                          </div>  
+          
+                          <div class="mb-3 col-md-6">
+                            <label for="fechaInicio" class="form-label">Fecha inicio</label>
+                            <input class="form-control" [(ngModel)]="fechaInicio" type="date" min={{manana}} name="fechaInicio" id="fechaInicio" value=""  required />
+                          </div>
+            
+                          <div class="mb-3 col-md-6">
+                            <label for="fechaFin" class="form-label">Fecha fin</label>
+                            <input class="form-control" [(ngModel)]="fechaFin" type="date" name="fechaFin" id="fechaFin" value=""  required />
+                          </div>
+                          
+                          <div class="mb-3 col-md-6">
+                            <label for="horaInicio" class="form-label">Hora de inicio</label>
+                            <input type="time" [(ngModel)]="horaInicio"  class="form-control" id="horaInicio" name="horaInicio" placeholder="" required />
+                          </div>        
+                        
+                          <div class="mb-3 col-md-6">
+                            <label for="distancia" class="form-label">Duración de turno (minutos)</label>
+                            <input type="number" [(ngModel)]="distancia" class="form-control" id="distancia" name="distancia" value="15" placeholder="" required />
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="cantTurnos" class="form-label">Cantidad de turnos</label>
+                            <input type="number" class="form-control" [(ngModel)]="cantTurnos" id="cantTurnos" name="cantTurnos" placeholder="" value="10" required />
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="cantPuestos" class="form-label">Cantidad de puestos</label>
+                            <input type="number" class="form-control" [(ngModel)]="cantPuestos" id="cantPuestos" name="cantTurnos" placeholder="" value="10" required />
+                          </div>
+            
+                          
+
+                          <div class="mt-2">
+                            <button (click)="guardarAgenda()" class="btn btn-secondary me-2">Generar agenda</button>
+                            <button  type="reset" class="btn btn-outline-secondary">Borrar</button>
+                          </div>
+
+                        
+
+                      </div>
+                  </form>
+                  <div *ngIf='warnMessage!=""' class="mt-2 alert alert-danger" role="alert">
+                    {{warnMessage}}
+                  </div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+

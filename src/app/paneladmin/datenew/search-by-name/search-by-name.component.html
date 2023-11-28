@@ -1,0 +1,57 @@
+<div class="row mb-3" >
+    <div class="form-group col-md-4 mb-3">
+        <label class="form-label me-3" for="txtNombre" >Nombre:</label> <span  class="bg-light text-dark"></span>
+        <input type="text"  [(ngModel)]=txtNombre id="txtNombre" name="txtNombre" class="form-control  mb-3" value="">
+        <button class="btn btn-outline-success"  (click)="buscarNombre()">Buscar</button>
+    </div>
+</div>
+
+<div *ngIf="panelPersonas">
+    <table class="table align-middle mb-3 bg-white">
+        <thead class="bg-light">
+          <tr>
+            <th>DNI</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Dirección</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of personas">
+            <td >
+              <div class="d-flex align-items-center">
+                <!-- <img
+                    src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+                    alt=""
+                    style="width: 45px; height: 45px"
+                    class="rounded-circle"
+                    /> -->
+                <div class="ms-3">
+                  <p class="fw-bold mb-1">{{item.dni}}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="fw-normal mb-1">{{item.nombre}}</p>
+            </td>
+            <td>
+              <p class="fw-normal mb-1">{{item.apellido}}</p>
+            </td>
+            <td>
+                <p class="fw-normal mb-1">{{item.domicilio}}</p>
+            </td>      
+            <td>
+              <button type="button" class="btn btn-link btn-sm btn-rounded" (click)="SelPersona(item)">
+                Seleccionar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+    <div class="form-group col-md-4 mb-3">
+        <button class="btn btn-success ml-3 D-block"    *ngIf="btnAnterior" (click)="anteriorPag()">Anterior</button>
+        <button class="btn btn-success ml-3 D-block" *ngIf="btnSiguiente" (click)="siguientePag()">Siguiente</button>
+
+    </div>
+  </div>
